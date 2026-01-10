@@ -1,11 +1,10 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import os
-from file_manager import FileManager as fm
 
 class Frontend:
 
-    def __init__(self, files):
+    def __init__(self, files, fm):
         self.first_image_index = 0
         self.control_panel_size = 5
 
@@ -16,9 +15,11 @@ class Frontend:
         self.output_image_height = 75
 
         self.files = files
+        self.fm = fm
 
         self.window = tk.Tk()
         self.window.state('zoomed')
+        self.window.configure(background='#555555')
         self.window.title('Bilder-Verwaltung')
         self.window.bind("<Key>", self.read_input)
 
@@ -78,11 +79,11 @@ class Frontend:
             self.first_image_index += 1
             self.create_image_control()
         if key == '0' or key == '1' or key == '2' or key == '3' or key == '4' or key == '5' or key == '6' or key == '7' or key == '8' or key == '9':
-            self.files = fm.move_image(fm, self.active_image, int(key))
-            self.create_output_panels("C:/temp/output/")
+            self.files = self.fm.move_image(self.active_image, int(key))
+            self.create_output_panels(self.fm.output_root)
             self.create_image_control()
         if key == 'Delete':
-            self.files = fm.remove_image(fm, self.active_image)
+            self.files = self.fm.remove_image(self.active_image)
             self.create_image_control()
 
     def create_output_panels(self, folder_path):
@@ -93,9 +94,7 @@ class Frontend:
     def create_output_panel(self, index, folder_path, folder_name):
         counter = 0
 
-        files = fm.read_images(self, f"{folder_path}/{folder_name}/")
-
-
+        files = self.fm.read_images(f"{folder_path}/{folder_name}/")
 
         self.output_imgs = []
 

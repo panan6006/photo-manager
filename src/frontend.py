@@ -20,7 +20,7 @@ class Frontend:
         self.window = tk.Tk()
         self.window.state('zoomed')
         self.window.configure(background='#555555')
-        self.window.title('Bilder-Verwaltung')
+        self.window.title('Photo Manager')
         self.window.bind("<Key>", self.read_input)
 
         self.control_frame = tk.Frame(name="control_frame")
